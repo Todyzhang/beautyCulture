@@ -1,0 +1,63 @@
+.mui-scroll-wrapper{
+  background:#efefef;
+}
+
+/*对话框*/
+.mui-popup {
+  border-radius: 5px;
+}
+
+.mui-popup-inner {
+  border-radius: 5px 5px 0 0;
+  padding: 30px 15px;
+}
+
+.mui-popup-button:first-child {
+  border-radius: 0 0 0 5px;
+  color: #fff;
+  background: #f90101;
+}
+
+.mui-popup-button:last-child {
+  border-radius: 0 0 5px 0;
+  color: #333;
+}
+
+.mui-popup-button.mui-popup-button-bold {
+  font-weight: 400;
+}
+
+.mui-popup-title {
+  font-weight: 400;
+  font-size: 16px;
+  color: #333;
+}
+/*cell上下之间间隔*/
+.mui-table-view-cell:after {
+  left: 0;
+}
+
+.mt-15{
+  margin-top:15px!important;
+}
+
+.mui-btn-default{
+  background: #f90101;
+  color: #fff;
+  border:0;
+}
+.mui-btn-default:active{
+  background: #e00000;
+  color:#fff;
+}
+
+.bc-bar{
+  height:10px;
+  width:100%;
+  background:#efeff4;
+}
+
+.recommend-2{
+  -webkit-display: flex;
+  display: flex;
+}
