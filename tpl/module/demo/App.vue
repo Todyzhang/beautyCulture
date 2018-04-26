@@ -37,7 +37,7 @@
 
 <script>
 
-  import TopContent from "../../containers/topContent";
+  import TopContent from "src/containers/topContent";
 
   export default {
     components: {
@@ -46,8 +46,7 @@
     name: "app",
     data(){
       return {
-        gList: [
-        ]
+        gList: []
       }
     },
     mounted(){

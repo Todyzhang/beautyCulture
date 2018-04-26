@@ -128,14 +128,14 @@ e.g.
     padding: 0 .5em;
   }
   .mui-indicator{
-    color:#ccc;
+    color:#999;
     width:3px;
     height:3px;
+    box-shadow: none;
   }
   .mui-indicator.mui-active{
     width:10px;
     height:3px;
     border-radius:3px;
-    box-shadow: 0 0 1px 1px #fff;
   }
 </style>

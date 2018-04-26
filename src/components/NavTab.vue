@@ -24,7 +24,7 @@
     data() {
       return {
         items: [
-          {url: "index.html", label: "首页", className: "icon-home", is1stShow: !1,msgNum:10},
+          {url: "main.html", label: "首页", className: "icon-home", is1stShow: !1,msgNum:10},
           {url: "person.html", label: "美丽说", className: "icon-beauty", is1stShow: !1},
           {url: "person.html", label: "消息", className: "icon-msg", is1stShow: !1,hasNew:1},
           {url: "person.html", label: "我", className: "icon-person", is1stShow: !1}
@@ -116,33 +116,33 @@
   }
 
   .mui-icon.icon-home {
-    background-image: url(../assets/icon_home_nor.png);
+    background-image: url(../../static/imgs/icon_home_nor.png);
   }
 
   .mui-active .mui-icon.icon-home {
-    background-image: url(../assets/icon_home_pre.png);
+    background-image: url(../../static/imgs/icon_home_pre.png);
   }
 
   .mui-icon.icon-msg {
-    background-image: url(../assets/icon_message_nor.png);
+    background-image: url(../../static/imgs/icon_message_nor.png);
   }
 
   .mui-active .mui-icon.icon-msg {
-    background-image: url(../assets/icon_message_pre.png);
+    background-image: url(../../static/imgs/icon_message_pre.png);
   }
 
   .mui-icon.icon-person {
-    background-image: url(../assets/icon_user_nor.png);
+    background-image: url(../../static/imgs/icon_user_nor.png);
   }
 
   .mui-active .mui-icon.icon-person {
-    background-image: url(../assets/icon_user_pre.png);
+    background-image: url(../../static/imgs/icon_user_pre.png);
   }
   .mui-icon.icon-beauty {
-    background-image: url(../assets/icon_beauty_nor.png);
+    background-image: url(../../static/imgs/icon_beauty_nor.png);
   }
 
   .mui-active .mui-icon.icon-beauty {
-    background-image: url(../assets/icon_beauty_pre.png);
+    background-image: url(../../static/imgs/icon_beauty_pre.png);
   }
 </style>

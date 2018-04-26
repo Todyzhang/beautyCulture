@@ -1,7 +1,7 @@
 <template>
   <top-content>
     <nav-bar slot="page-header" nb-title="登录" :nb-left="nbLeft"/>
-    <img class="logo" src="../../assets/logo.png"/>
+    <!--<img class="logo" src="../../assets/logo.png"/>-->
     <form class="login-form">
       <div class="mui-input-row">
         <span class="mui-icon mui-icon-person"></span>
@@ -218,15 +218,15 @@
   }
 
   .oauth-area .oauth-btn.weixin {
-    background-image: url("./imgs/weixin.png");
+    background-image: url("../../../static/imgs/weixin.png");
   }
 
   .oauth-area .oauth-btn.qq {
-    background-image: url("./imgs/qq.png");
+    background-image: url("../../../static/imgs/qq.png");
   }
 
   .oauth-area .oauth-btn.sinaweibo {
-    background-image: url("./imgs/sinaweibo.png");
+    background-image: url("../../../static/imgs/sinaweibo.png");
   }
 
   .oauth-area .oauth-btn:active {

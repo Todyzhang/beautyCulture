@@ -1,74 +1,101 @@
-let path = require('path');
-let utils = require('./utils');
-let config = require('../config');
-let vueLoaderConfig = require('./vue-loader.conf');
-let CopyWebpackPlugin = require('copy-webpack-plugin');
-let HtmlWebpackPlugin = require('html-webpack-plugin');
-let resolve = function (dir) {
-  return path.join(__dirname, '..', dir);
-};
-let entries = utils.getEntries(resolve("src") + '/pages/**/main.js');
-let pages = utils.getEntries(resolve("src") + '/pages/**/index.html', 1);
+var webpack = require('webpack')
+var ExtractTextPlugin = require("extract-text-webpack-plugin")
+var CopyWebpackPlugin = require('copy-webpack-plugin')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
+var CleanPlugin = require('clean-webpack-plugin')
+var path = require('path')
+var config = require('../config')
+var utils = require('./utils')
+var projectRoot = utils.getRealPath('../');
+var entries = utils.getEntry('./src/pages/**/main.js') // 获得入口js文件
+
+var env = process.env.NODE_ENV
+  // check env & config/index.js to decide weither to enable CSS Sourcemaps for the
+  // various preprocessor loaders added to vue-loader at the end of this file
+var cssSourceMapDev = (env === 'development' && config.dev.cssSourceMap)
+var cssSourceMapProd = (env === 'production' && config.build.productionSourceMap)
+var useCssSourceMap = cssSourceMapDev || cssSourceMapProd
 
 module.exports = {
   entry: entries,
   output: {
-    path: config.build.assetsRoot,// 指定打包之后的文件夹
-    filename: 'js/[name].js',// 指定打包为一个文件
-    // 指定资源文件引用的目录
-    publicPath: process.env.NODE_ENV === 'production'
-      ? config.build.assetsPublicPath
-      : config.webdev.assetsPublicPath
+    path: config.build.assetsRoot,
+    publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
+    filename: '[name].js'
+  },
+  resolve: {
+    extensions: ['', '.js', '.vue'],
+    fallback: [utils.getRealPath('../node_modules')],
+    alias: {
+      'vue$': 'vue/dist/vue',
+      'src': utils.getRealPath('../src'),
+      'imgs': utils.getRealPath('../static/imgs'),
+      'common': utils.getRealPath('../src/common'),
+      'components': utils.getRealPath('../src/components')
+    }
   },
   externals: {
     'mui': 'window.mui'
   },
-  resolve: {
-    extensions: ['.js', '.vue', '.json'],
-    alias: {
-      'vue$': 'vue/dist/vue.esm.js',
-      '@': resolve('src')
-    }
+  resolveLoader: {
+    fallback: [utils.getRealPath('../node_modules')]
   },
   module: {
-    rules: [
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: vueLoaderConfig
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
-      },
-      {
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
-        }
-      },
-      {
+    loaders: [{
+      test: /\.vue$/,
+      loader: 'vue'
+    }, {
+      test: /\.js$/,
+      loader: 'babel',
+      include: projectRoot,
+      exclude: /node_modules/
+    }, {
+      test: /\.json$/,
+      loader: 'json'
+    }, {
+      test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+      loader: 'url',
+      query: {
+        limit: 10000,
+        name: utils.assetsPath('img/[name].[hash:7].[ext]')
+      }
+    },{
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
         loader: 'url-loader',
         options: {
           limit: 10000,
           name: utils.assetsPath('media/[name].[hash:7].[ext]')
         }
-      },
-      {
-        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
-        }
+      }, {
+      test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+      loader: 'url',
+      query: {
+        limit: 10000,
+        name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
       }
+    }]
+  },
+  vue: {
+    loaders: utils.cssLoaders({
+      sourceMap: useCssSourceMap
+    }),
+    postcss: [
+      require('autoprefixer')({
+        browsers: ["iOS >= 7","Android >= 4"]
+      })
     ]
   },
   plugins: [
+    //清空生成目录
+    new CleanPlugin(
+      ['dist/**.*'],　 //匹配删除的文件
+      {
+        root: utils.getRealPath('../'),       　　　　　　　　　　//根目录
+        verbose:  true,        　　　　　　　　　　//开启在控制台输出信息
+        dry:      false,        　　　　　　　　　　//启用删除文件
+        ignore:'.project'
+      }
+    ),
     /*
       from    定义要拷贝的源目录           from: __dirname + ‘/src/public’
       to      定义要拷贝到的目标目录     from: __dirname + ‘/dist’
@@ -80,47 +107,25 @@ module.exports = {
      */
     new CopyWebpackPlugin([
       {
-        from: resolve('static/lib'),
-        to: config.build.assetsRoot + '/mui/'
-      },
-      // copy custom manifest
-      {
-        from: resolve('src/manifest.json'),
+        from: utils.getRealPath('../src/manifest.json'),
         to: config.build.assetsRoot,
-        ignore: ['.*']
+        force:true
+      }
+    ]),
+    new CopyWebpackPlugin([
+      {
+        from:utils.getRealPath("../static/mui"),
+        to:config.build.assetsRoot+"/mui",
+        force:true,
+        toType:"dir"
       }
     ]),
     new HtmlWebpackPlugin({
       filename: "index.html",
-      template: resolve("index.html"),
+      template: utils.getRealPath("../index.html"),
       inject: false
     })
   ]
-}
+};
 
-for (let pathname in pages) {
-  // 生成html相关配置
-  let conf = {
-    filename: pathname + '.html', // html文件输出路径
-    template: pages[pathname],   // 模板路径
-    inject: true,                // js插入位置
-    minify: {
-      // 压缩设置
-      // removeComments: true,
-      // collapseWhitespace: true,
-      // removeAttributeQuotes: true
-      // more options:
-      // https://github.com/kangax/html-minifier#options-quick-reference
-    },
-    // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-    chunksSortMode: 'dependency'
-  };
-  pathname = pathname.split('/')[1];//  去掉views
-  if (pathname in module.exports.entry) {
-    conf.inject = 'body';
-    //  如果每个html没有进入这里的话，那么全部js将会插入html
-    conf.chunks = [pathname];
-    conf.hash = true;
-  }
-  module.exports.plugins.push(new HtmlWebpackPlugin(conf));
-}
+
