@@ -3,19 +3,19 @@
 @attr muData    object,必传。格式为：
                 {
                   data:[{"text":"some text",tag:"前缀标签"}...],
-                  speed:3,   //滚动时间，默认3秒
-                  displayNum:1,  //1次显示的文本行数
+                  speed:3   //滚动时间，默认3秒
                 }
 
 e.g.
   html:
-    <nva-bar nb-title="导航条"></nva-bar>
-    <nva-bar :nb-title="title" :nb-left="nbLeft" :nb-right="nbRight"></nva-bar>
+    <marquee-up :mu-data="newsData"></marquee-up>
   js:
     data(){
-      title:"导航条",
-      nbLeft:{icon:"mui-icon-left-nav",text:"返回"},
-      nbRight:{icon:"mui-icon-bars"}
+      newsData:{
+          data:[
+          {"text":"我们也有着很棒的教练来指导各年龄段的小球员我们也有着很棒的教练来指导各年龄段的小球员",tag:"有料"}
+          ]
+        }
     }
 -->
 <template>
@@ -59,14 +59,20 @@ e.g.
         return this.newsData.length||0;
       },
       marqueeData(){
-        let data=this.newsData;
-        if(data.length===1){
-          data.push(this.newsData[0],this.newsData[0],this.newsData[0],this.newsData[0]);
-        }else if(data.length===2){
-          data.push(this.newsData[0],this.newsData[1]);
-        }if(data.length===3){
-          data.push(this.newsData[0]);
+        let data=this.newsData,size=this.newsSize,underFlag=0;
+        // if(data.length===1){
+        //   data.push(this.newsData[0],this.newsData[0],this.newsData[0],this.newsData[0]);
+        // }else if(data.length===2){
+        //   data.push(this.newsData[0],this.newsData[1]);
+        // }if(data.length===3){
+        //   data.push(this.newsData[0]);
+        // }
+
+        for(let i=size;i<4;i++){
+          data.push(data[underFlag]);
+          if(underFlag+1 > size) underFlag = 0;
         }
+
         data.push(this.newsData[0],this.newsData[1]);
         return data;
       },

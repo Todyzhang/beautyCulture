@@ -88,12 +88,13 @@ module.exports = {
   plugins: [
     //清空生成目录
     new CleanPlugin(
-      ['dist/**.*'],　 //匹配删除的文件
+      ['dist'],　 //匹配删除的文件
       {
         root: utils.getRealPath('../'),       　　　　　　　　　　//根目录
         verbose:  true,        　　　　　　　　　　//开启在控制台输出信息
         dry:      false,        　　　　　　　　　　//启用删除文件
-        ignore:'.project'
+        exclude:['.project'], //不删除文件
+        allowExternal:true
       }
     ),
     /*
