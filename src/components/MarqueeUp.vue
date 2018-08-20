@@ -133,8 +133,8 @@ e.g.
 
       a {
         display: block;
-        color: #333;
-        font-size:16px;
+        color: @color_normal;
+        font-size:14px;
         margin: 0;
         white-space: nowrap;
 
